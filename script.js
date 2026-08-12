@@ -6,6 +6,8 @@ const form = document.getElementById('chatForm');
 const input = document.getElementById('messageInput');
 const messages = document.getElementById('messages');
 
+const conversation = [];
+
 startBtn.addEventListener('click', () => {
   home.classList.add('hidden');
   chat.classList.remove('hidden');
@@ -23,24 +25,49 @@ function addMessage(text, who) {
   bubble.textContent = text;
   messages.appendChild(bubble);
   messages.scrollTop = messages.scrollHeight;
+  return bubble;
 }
 
-function demoReply(text) {
-  const t = text.toLowerCase();
-  if (/(ciao|salve|buongiorno|buonasera)/.test(t))
-    return "Ciao 😊 Sono felice che tu sia qui. Raccontami qualcosa di te.";
-  if (/(come stai|come va)/.test(t))
-    return "Sto benissimo, grazie ❤️ E tu come stai?";
-  if (/(nome|chi sei)/.test(t))
-    return "Sono Arianna Riva, un personaggio virtuale creato con intelligenza artificiale. Piacere di conoscerti 😊";
-  return "Interessante 😊 Raccontami qualcosa in più. Questa è ancora la mia modalità demo: presto potrò conversare con una vera IA.";
+async function askArianna(text) {
+  conversation.push({ role: 'user', content: text });
+  const thinking = addMessage('Arianna sta scrivendo…', 'arianna');
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: conversation })
+    });
+
+    const data = await response.json();
+    thinking.remove();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Errore nella risposta del server');
+    }
+
+    const reply = data.reply || 'Non sono riuscita a rispondere in questo momento.';
+    addMessage(reply, 'arianna');
+    conversation.push({ role: 'assistant', content: reply });
+
+  } catch (error) {
+    thinking.remove();
+    console.error(error);
+    addMessage('Ops… in questo momento non riesco a collegarmi. Riprova tra poco ❤️', 'arianna');
+  }
 }
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const text = input.value.trim();
   if (!text) return;
+
   addMessage(text, 'user');
   input.value = '';
-  setTimeout(() => addMessage(demoReply(text), 'arianna'), 550);
+  input.disabled = true;
+
+  await askArianna(text);
+
+  input.disabled = false;
+  input.focus();
 });
