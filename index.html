@@ -6,32 +6,42 @@
   <title>Arianna Riva AI</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <main class="app">
+    <section id="home" class="home">
+      <div class="photo-card">
+        <img src="arianna.png" alt="Arianna Riva">
+      </div>
+      <div class="intro-card">
+        <span class="badge">AI EXPERIENCE</span>
+        <h1>Arianna Riva</h1>
+        <p>La tua nuova esperienza con un'intelligenza artificiale interattiva.</p>
+        <button id="startBtn">Inizia</button>
+      </div>
+    </section>
 
-  <main class="hero">
+    <section id="chat" class="chat hidden">
+      <header class="chat-header">
+        <img src="arianna.png" alt="Arianna Riva">
+        <div>
+          <h2>Arianna Riva</h2>
+          <span class="online"><i></i> Online</span>
+        </div>
+        <button id="backBtn" class="back">← Indietro</button>
+      </header>
 
-    <div class="image-box">
-      <img src="arianna.png" alt="Arianna Riva">
-    </div>
+      <div id="messages" class="messages">
+        <div class="message arianna">
+          Ciao ❤️ Sono Arianna. Mi fa piacere conoscerti. Come ti chiami?
+        </div>
+      </div>
 
-    <div class="card">
-      <div class="badge">AI EXPERIENCE</div>
-
-      <h1>Arianna Riva</h1>
-
-      <p class="subtitle">
-        La tua nuova esperienza con un'intelligenza artificiale interattiva.
-      </p>
-
-      <button id="startButton">Inizia</button>
-
-      <p id="message" class="message"></p>
-    </div>
-
+      <form id="chatForm" class="composer">
+        <input id="messageInput" type="text" placeholder="Scrivi un messaggio…" autocomplete="off">
+        <button type="submit">Invia</button>
+      </form>
+    </section>
   </main>
-
   <script src="script.js"></script>
-
 </body>
 </html>
