@@ -10,8 +10,15 @@ const typingIndicator = document.getElementById('typingIndicator');
 
 const clearMemoryBtn = document.getElementById('clearMemoryBtn');
 const memoryModal = document.getElementById('memoryModal');
+const closeMemoryBtn = document.getElementById('closeMemoryBtn');
+const memoryList = document.getElementById('memoryList');
+const emptyMemory = document.getElementById('emptyMemory');
 const cancelMemoryBtn = document.getElementById('cancelMemoryBtn');
-const confirmMemoryBtn = document.getElementById('confirmMemoryBtn');
+const clearAllMemoryBtn = document.getElementById('clearAllMemoryBtn');
+
+const confirmClearModal = document.getElementById('confirmClearModal');
+const cancelClearBtn = document.getElementById('cancelClearBtn');
+const confirmClearBtn = document.getElementById('confirmClearBtn');
 
 const conversation = [];
 
@@ -71,6 +78,118 @@ function saveSmartMemories(memories) {
 }
 
 let userMemory = loadMemory();
+
+function renderMemoryList() {
+  memoryList.innerHTML = '';
+
+  const items = [];
+
+  if (userMemory.nome) {
+    items.push({
+      category: 'Nome',
+      value: userMemory.nome,
+      key: 'nome'
+    });
+  }
+
+  if (userMemory.colorePreferito) {
+    items.push({
+      category: 'Colore preferito',
+      value: userMemory.colorePreferito,
+      key: 'colorePreferito'
+    });
+  }
+
+  if (userMemory.autoPreferita) {
+    items.push({
+      category: 'Auto preferita',
+      value: userMemory.autoPreferita,
+      key: 'autoPreferita'
+    });
+  }
+
+  if (userMemory.filmPreferito) {
+    items.push({
+      category: 'Film preferito',
+      value: userMemory.filmPreferito,
+      key: 'filmPreferito'
+    });
+  }
+
+  if (userMemory.artistaPreferito) {
+    items.push({
+      category: 'Artista preferito',
+      value: userMemory.artistaPreferito,
+      key: 'artistaPreferito'
+    });
+  }
+
+  if (userMemory.hobby) {
+    items.push({
+      category: 'Hobby',
+      value: userMemory.hobby,
+      key: 'hobby'
+    });
+  }
+
+  if (Array.isArray(userMemory.smartMemories)) {
+    userMemory.smartMemories.forEach((memory, index) => {
+      items.push({
+        category: memory.category,
+        value: memory.value,
+        smartIndex: index
+      });
+    });
+  }
+
+  if (!items.length) {
+    emptyMemory.classList.remove('hidden');
+    return;
+  }
+
+  emptyMemory.classList.add('hidden');
+
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'memory-item';
+
+    const text = document.createElement('div');
+    text.className = 'memory-item-text';
+
+    const category = document.createElement('span');
+    category.className = 'memory-item-category';
+    category.textContent = item.category;
+
+    const value = document.createElement('div');
+    value.className = 'memory-item-value';
+    value.textContent = item.value;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'memory-delete';
+    deleteBtn.type = 'button';
+    deleteBtn.textContent = '✕';
+
+    deleteBtn.addEventListener('click', () => {
+      if (typeof item.smartIndex === 'number') {
+        userMemory.smartMemories.splice(item.smartIndex, 1);
+      } else if (item.key) {
+        delete userMemory[item.key];
+      }
+
+      saveMemory(userMemory);
+      renderMemoryList();
+    });
+
+    text.appendChild(category);
+    text.appendChild(value);
+
+    
+    row.appendChild(text);
+    row.appendChild(deleteBtn);
+
+    memoryList.appendChild(row);
+  });
+}
 
 function cleanValue(value) {
   return value
@@ -246,29 +365,39 @@ backBtn.addEventListener('click', () => {
 });
 
 clearMemoryBtn.addEventListener('click', () => {
+  renderMemoryList();
   memoryModal.classList.remove('hidden');
+});
+
+closeMemoryBtn.addEventListener('click', () => {
+  memoryModal.classList.add('hidden');
 });
 
 cancelMemoryBtn.addEventListener('click', () => {
   memoryModal.classList.add('hidden');
 });
 
-confirmMemoryBtn.addEventListener('click', () => {
-  localStorage.removeItem(MEMORY_KEY);
+clearAllMemoryBtn.addEventListener('click', () => {
+  confirmClearModal.classList.remove('hidden');
+});
 
-  // Pulizia anche di eventuali vecchie versioni della memoria
+cancelClearBtn.addEventListener('click', () => {
+  confirmClearModal.classList.add('hidden');
+});
+
+confirmClearBtn.addEventListener('click', () => {
+  localStorage.removeItem(MEMORY_KEY);
   localStorage.removeItem('arianna_user_memory_v1');
   localStorage.removeItem('arianna_user_memory_v2');
 
   userMemory = {};
-
-  // Cancella anche il contesto della conversazione corrente
   conversation.length = 0;
 
+  confirmClearModal.classList.add('hidden');
   memoryModal.classList.add('hidden');
 
   addMessage(
-    'Fatto. Ho cancellato tutto quello che ricordavo su di te in questo browser ❤️',
+    'Fatto. Ho cancellato tutti i ricordi salvati su questo browser ❤️',
     'arianna'
   );
 });
