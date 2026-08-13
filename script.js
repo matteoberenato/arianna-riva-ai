@@ -112,11 +112,11 @@ function renderMemoryList() {
 
   const items = [];
 
-  if (userMemory.name) {
+  if (userMemory.nome) {
     items.push({
         category: 'Nome',
-        value: userMemory.name,
-        key: 'name'
+        value: userMemory.nome,
+        key: 'nome'
     });
 }
   
