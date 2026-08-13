@@ -331,7 +331,13 @@ if (Array.isArray(userMemory.smartMemories)) {
   return `
 MEMORIA UTENTE:
 Queste informazioni provengono da conversazioni precedenti.
-Usale naturalmente senza ripeterle inutilmente.
+
+Usale in modo naturale quando sono pertinenti alla conversazione.
+Non elencarle tutte e non dire mai che stai leggendo una memoria.
+Puoi richiamare spontaneamente gusti, hobby e preferenze dell'utente
+quando aiutano a rendere la risposta più personale e naturale.
+Evita di ripetere la stessa informazione troppo spesso.
+
 ${facts.join('\n')}
 `;
 }
