@@ -208,12 +208,20 @@ cancelMemoryBtn.addEventListener('click', () => {
 
 confirmMemoryBtn.addEventListener('click', () => {
   localStorage.removeItem(MEMORY_KEY);
+
+  // Pulizia anche di eventuali vecchie versioni della memoria
+  localStorage.removeItem('arianna_user_memory_v1');
+  localStorage.removeItem('arianna_user_memory_v2');
+
   userMemory = {};
+
+  // Cancella anche il contesto della conversazione corrente
+  conversation.length = 0;
 
   memoryModal.classList.add('hidden');
 
   addMessage(
-    'Fatto. Ho cancellato i ricordi salvati su questo browser ❤️',
+    'Fatto. Ho cancellato tutto quello che ricordavo su di te in questo browser ❤️',
     'arianna'
   );
 });
