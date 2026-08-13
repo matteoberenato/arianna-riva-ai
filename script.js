@@ -28,6 +28,47 @@ function loadMemory() {
 function saveMemory(memory) {
   localStorage.setItem(MEMORY_KEY, JSON.stringify(memory));
 }
+function saveSmartMemories(memories) {
+  if (!Array.isArray(memories)) return;
+
+  if (!Array.isArray(userMemory.smartMemories)) {
+    userMemory.smartMemories = [];
+  }
+
+  for (const memory of memories) {
+    if (
+      !memory ||
+      typeof memory.category !== 'string' ||
+      typeof memory.value !== 'string'
+    ) {
+      continue;
+    }
+
+    const category = memory.category.trim().slice(0, 50);
+    const value = memory.value.trim().slice(0, 120);
+
+    if (!category || !value) continue;
+
+    const alreadyExists = userMemory.smartMemories.some(
+      item =>
+        item.category.toLowerCase() === category.toLowerCase() &&
+        item.value.toLowerCase() === value.toLowerCase()
+    );
+
+    if (!alreadyExists) {
+      userMemory.smartMemories.push({
+        category,
+        value
+      });
+    }
+  }
+
+  // Evitiamo che la memoria cresca senza limite.
+  userMemory.smartMemories =
+    userMemory.smartMemories.slice(-30);
+
+  saveMemory(userMemory);
+}
 
 let userMemory = loadMemory();
 
@@ -119,7 +160,13 @@ function memoryContext() {
   if (userMemory.hobby) {
     facts.push(`Il suo hobby preferito è ${userMemory.hobby}.`);
   }
-
+if (Array.isArray(userMemory.smartMemories)) {
+  for (const memory of userMemory.smartMemories) {
+    facts.push(
+      `${memory.category}: ${memory.value}.`
+    );
+  }
+}
   if (!facts.length) return '';
 
   return `
@@ -264,7 +311,11 @@ async function askArianna(text) {
 
     const data = await response.json();
 
-    hideTyping();
+hideTyping();
+
+if (response.ok && Array.isArray(data.memories)) {
+  saveSmartMemories(data.memories);
+}
 
     if (!response.ok) {
       throw new Error(
