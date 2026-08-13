@@ -3,45 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171225">
   <title>Arianna Riva AI</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
   <main class="app">
+
     <section id="home" class="home">
+
       <div class="photo-card">
         <img src="arianna.png" alt="Arianna Riva">
       </div>
+
       <div class="intro-card">
         <span class="badge">AI EXPERIENCE</span>
+
         <h1>Arianna Riva</h1>
-        <p>La tua nuova esperienza con un'intelligenza artificiale interattiva.</p>
+
+        <p>
+          Una conversazione personale, naturale e sempre diversa.
+        </p>
+
         <button id="startBtn">Inizia</button>
       </div>
+
     </section>
+
 
     <section id="chat" class="chat hidden">
+
       <header class="chat-header">
-        <img src="arianna.png" alt="Arianna Riva">
-        <div>
-          <h2>Arianna Riva</h2>
-          <span class="online"><i></i> Online</span>
+
+        <div class="profile">
+
+          <img src="arianna.png" alt="Arianna Riva">
+
+          <div class="profile-text">
+            <h2>Arianna Riva</h2>
+
+            <span class="online">
+              <i></i>
+              Online
+            </span>
+          </div>
+
         </div>
-        <button id="backBtn" class="back">← Indietro</button>
+
+        <div class="chat-actions">
+
+          <button
+            id="clearMemoryBtn"
+            class="icon-button"
+            type="button"
+            title="Cancella memoria">
+            🧠
+          </button>
+
+          <button
+            id="backBtn"
+            class="back"
+            type="button">
+            ← Indietro
+          </button>
+
+        </div>
+
       </header>
 
+
       <div id="messages" class="messages">
-        <div class="message arianna">
-          Ciao ❤️ Sono Arianna. Mi fa piacere conoscerti. Come ti chiami?
+
+        <div class="message-row arianna-row">
+
+          <img
+            class="avatar-small"
+            src="arianna.png"
+            alt="Arianna">
+
+          <div>
+
+            <div class="message arianna">
+              Ciao ❤️ Sono Arianna. Mi fa piacere rivederti.
+            </div>
+
+            <div class="message-time">
+              adesso
+            </div>
+
+          </div>
+
         </div>
+
       </div>
 
+
+      <div
+        id="typingIndicator"
+        class="typing hidden">
+
+        <img
+          class="avatar-small"
+          src="arianna.png"
+          alt="Arianna">
+
+        <div class="typing-bubble">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+      </div>
+
+
       <form id="chatForm" class="composer">
-        <input id="messageInput" type="text" placeholder="Scrivi un messaggio…" autocomplete="off">
-        <button type="submit">Invia</button>
+
+        <input
+          id="messageInput"
+          type="text"
+          placeholder="Scrivi un messaggio..."
+          autocomplete="off">
+
+        <button type="submit">
+          Invia
+        </button>
+
       </form>
+
     </section>
+
   </main>
+
+
+  <div
+    id="memoryModal"
+    class="modal hidden">
+
+    <div class="modal-card">
+
+      <h3>Cancellare la memoria?</h3>
+
+      <p>
+        Arianna dimenticherà il nome, i gusti e le preferenze
+        memorizzate su questo browser.
+      </p>
+
+      <div class="modal-actions">
+
+        <button
+          id="cancelMemoryBtn"
+          class="secondary-button"
+          type="button">
+          Annulla
+        </button>
+
+        <button
+          id="confirmMemoryBtn"
+          class="danger-button"
+          type="button">
+          Cancella memoria
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
   <script src="script.js"></script>
+
 </body>
 </html>
