@@ -6,6 +6,13 @@ const form = document.getElementById('chatForm');
 const input = document.getElementById('messageInput');
 const messages = document.getElementById('messages');
 
+const typingIndicator = document.getElementById('typingIndicator');
+
+const clearMemoryBtn = document.getElementById('clearMemoryBtn');
+const memoryModal = document.getElementById('memoryModal');
+const cancelMemoryBtn = document.getElementById('cancelMemoryBtn');
+const confirmMemoryBtn = document.getElementById('confirmMemoryBtn');
+
 const conversation = [];
 
 const MEMORY_KEY = 'arianna_user_memory_v1';
@@ -34,7 +41,6 @@ function cleanValue(value) {
 function learnFromMessage(text) {
   const memory = { ...userMemory };
 
-  // Nome
   let match = text.match(
     /(?:mi chiamo|il mio nome è|sono)\s+([A-Za-zÀ-ÖØ-öø-ÿ'’-]{2,30})/i
   );
@@ -43,7 +49,6 @@ function learnFromMessage(text) {
     memory.nome = cleanValue(match[1]);
   }
 
-  // Colore preferito
   match = text.match(
     /(?:il mio )?colore preferito (?:è|e')\s+([A-Za-zÀ-ÖØ-öø-ÿ'’ -]{2,30})/i
   );
@@ -52,7 +57,6 @@ function learnFromMessage(text) {
     memory.colorePreferito = cleanValue(match[1]);
   }
 
-  // Auto/macchina preferita
   match = text.match(
     /(?:la mia )?(?:macchina|auto) preferita (?:è|e')\s+(.{2,60})/i
   );
@@ -61,7 +65,6 @@ function learnFromMessage(text) {
     memory.autoPreferita = cleanValue(match[1]);
   }
 
-  // Film preferito
   match = text.match(
     /(?:il mio )?film preferito (?:è|e')\s+(.{2,60})/i
   );
@@ -70,7 +73,6 @@ function learnFromMessage(text) {
     memory.filmPreferito = cleanValue(match[1]);
   }
 
-  // Musica/artista preferito
   match = text.match(
     /(?:il mio )?(?:cantante|artista) preferito (?:è|e')\s+(.{2,60})/i
   );
@@ -79,7 +81,6 @@ function learnFromMessage(text) {
     memory.artistaPreferito = cleanValue(match[1]);
   }
 
-  // Hobby
   match = text.match(
     /(?:il mio hobby preferito (?:è|e')|come hobby mi piace)\s+(.{2,60})/i
   );
@@ -129,6 +130,63 @@ ${facts.join('\n')}
 `;
 }
 
+function getCurrentTime() {
+  return new Intl.DateTimeFormat('it-IT', {
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(new Date());
+}
+
+function scrollToBottom() {
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function addMessage(text, who) {
+  if (who === 'arianna') {
+    const row = document.createElement('div');
+    row.className = 'message-row arianna-row';
+
+    const avatar = document.createElement('img');
+    avatar.className = 'avatar-small';
+    avatar.src = 'arianna.png';
+    avatar.alt = 'Arianna';
+
+    const content = document.createElement('div');
+
+    const bubble = document.createElement('div');
+    bubble.className = 'message arianna';
+    bubble.textContent = text;
+
+    const time = document.createElement('div');
+    time.className = 'message-time';
+    time.textContent = getCurrentTime();
+
+    content.appendChild(bubble);
+    content.appendChild(time);
+
+    row.appendChild(avatar);
+    row.appendChild(content);
+
+    messages.appendChild(row);
+  } else {
+    const bubble = document.createElement('div');
+    bubble.className = 'message user';
+    bubble.textContent = text;
+
+    messages.appendChild(bubble);
+  }
+
+  scrollToBottom();
+}
+
+function showTyping() {
+  typingIndicator.classList.remove('hidden');
+}
+
+function hideTyping() {
+  typingIndicator.classList.add('hidden');
+}
+
 startBtn.addEventListener('click', () => {
   home.classList.add('hidden');
   chat.classList.remove('hidden');
@@ -140,14 +198,25 @@ backBtn.addEventListener('click', () => {
   home.classList.remove('hidden');
 });
 
-function addMessage(text, who) {
-  const bubble = document.createElement('div');
-  bubble.className = `message ${who}`;
-  bubble.textContent = text;
-  messages.appendChild(bubble);
-  messages.scrollTop = messages.scrollHeight;
-  return bubble;
-}
+clearMemoryBtn.addEventListener('click', () => {
+  memoryModal.classList.remove('hidden');
+});
+
+cancelMemoryBtn.addEventListener('click', () => {
+  memoryModal.classList.add('hidden');
+});
+
+confirmMemoryBtn.addEventListener('click', () => {
+  localStorage.removeItem(MEMORY_KEY);
+  userMemory = {};
+
+  memoryModal.classList.add('hidden');
+
+  addMessage(
+    'Fatto. Ho cancellato i ricordi salvati su questo browser ❤️',
+    'arianna'
+  );
+});
 
 async function askArianna(text) {
   learnFromMessage(text);
@@ -157,10 +226,7 @@ async function askArianna(text) {
     content: text
   });
 
-  const thinking = addMessage(
-    'Arianna sta scrivendo…',
-    'arianna'
-  );
+  showTyping();
 
   try {
     const messagesForAI = [];
@@ -190,7 +256,7 @@ async function askArianna(text) {
 
     const data = await response.json();
 
-    thinking.remove();
+    hideTyping();
 
     if (!response.ok) {
       throw new Error(
@@ -210,7 +276,7 @@ async function askArianna(text) {
     });
 
   } catch (error) {
-    thinking.remove();
+    hideTyping();
     console.error(error);
 
     addMessage(
