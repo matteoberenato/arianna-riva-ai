@@ -56,19 +56,39 @@ function saveSmartMemories(memories) {
 
     if (!category || !value) continue;
 
-    const alreadyExists = userMemory.smartMemories.some(
-      item =>
-        item.category.toLowerCase() === category.toLowerCase() &&
-        item.value.toLowerCase() === value.toLowerCase()
-    );
+    const normalizedCategory = category.toLowerCase();
+const normalizedValue = value.toLowerCase();
 
-    if (!alreadyExists) {
-      userMemory.smartMemories.push({
-        category,
-        value
-      });
-    }
+const existingIndex = userMemory.smartMemories.findIndex(item => {
+  const itemCategory = item.category.toLowerCase();
+  const itemValue = item.value.toLowerCase();
+
+  if (itemCategory !== normalizedCategory) return false;
+
+  return (
+    itemValue === normalizedValue ||
+    itemValue.includes(normalizedValue) ||
+    normalizedValue.includes(itemValue)
+  );
+});
+
+if (existingIndex === -1) {
+  userMemory.smartMemories.push({
+    category,
+    value
+  });
+} else {
+  const existingValue =
+    userMemory.smartMemories[existingIndex].value;
+
+  // Manteniamo il valore più corto e pulito
+  if (value.length < existingValue.length) {
+    userMemory.smartMemories[existingIndex] = {
+      category,
+      value
+    };
   }
+}
 
   // Evitiamo che la memoria cresca senza limite.
   userMemory.smartMemories =
@@ -210,20 +230,20 @@ function learnFromMessage(text) {
   }
 
   match = text.match(
-    /(?:il mio )?colore preferito (?:è|e')\s+([A-Za-zÀ-ÖØ-öø-ÿ'’ -]{2,30})/i
-  );
+  /(?:il mio )?colore preferito (?:è|e')\s+(.{2,30}?)(?=\s+e\s+(?:il mio|la mia)\b|[.!?,;]|$)/i
+);
 
-  if (match) {
-    memory.colorePreferito = cleanValue(match[1]);
-  }
+if (match) {
+  memory.colorePreferito = cleanValue(match[1]);
+}
 
   match = text.match(
-    /(?:la mia )?(?:macchina|auto) preferita (?:è|e')\s+(.{2,60})/i
-  );
+  /(?:la mia )?(?:macchina|auto) preferita (?:è|e')\s+(.{2,60}?)(?=\s+e\s+(?:il mio|la mia)\b|[.!?,;]|$)/i
+);
 
-  if (match) {
-    memory.autoPreferita = cleanValue(match[1]);
-  }
+if (match) {
+  memory.autoPreferita = cleanValue(match[1]);
+}
 
   match = text.match(
     /(?:il mio )?film preferito (?:è|e')\s+(.{2,60})/i
