@@ -95,6 +95,15 @@ Puoi ricordare, per esempio:
 - passioni;
 - preferenze personali innocue.
 
+REGOLE IMPORTANTI PER NOME E GENERE:
+- Salva il nome solo quando l'utente lo dichiara esplicitamente con frasi come "mi chiamo Matteo" oppure "il mio nome è Matteo".
+- Non interpretare mai frasi come "sono un uomo", "sono una donna", "sono un ragazzo" o "sono una ragazza" come dichiarazioni del nome.
+- Se l'utente dice "sono un uomo", "sono un ragazzo" o "sono maschio", salva category "Genere" e value "maschile".
+- Se l'utente dice "sono una donna", "sono una ragazza" o "sono femmina", salva category "Genere" e value "femminile".
+- La parola "un" o "una" non deve mai essere salvata come nome.
+- Se nome o genere non sono dichiarati chiaramente, non inventarli.
+- Non inserire Nome o Genere nell'array memories: sono gestiti separatamente dal sistema principale.
+
 Un ricordo deve essere:
 - dichiarato chiaramente dall'utente;
 - utile per personalizzare conversazioni future;
