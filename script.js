@@ -248,7 +248,21 @@ function learnFromMessage(text) {
   if (match) {
     memory.nome = cleanValue(match[1]);
   }
+  
+match = text.match(
+    /\bsono\s+(?:(?:un|una)\s+)?(uomo|ragazzo|maschio|donna|ragazza|femmina)\b/i
+);
 
+if (match) {
+    const genderWord = match[1].toLowerCase();
+
+    if (['uomo', 'ragazzo', 'maschio'].includes(genderWord)) {
+        memory.gender = 'maschile';
+    } else {
+        memory.gender = 'femminile';
+    }
+}
+  
   match = text.match(
   /(?:il mio )?colore preferito (?:è|e')\s+(.{2,30}?)(?=\s+e\s+(?:il mio|la mia)\b|[.!?,;]|$)/i
 );
@@ -299,7 +313,12 @@ function memoryContext() {
   if (userMemory.nome) {
     facts.push(`Il nome dell'utente è ${userMemory.nome}.`);
   }
-
+  
+if (userMemory.gender) {
+    facts.push(`Il genere dell'utente è ${userMemory.gender}.`);
+} else {
+    facts.push(`Il genere dell'utente non è noto. Usa formulazioni neutre ed evita aggettivi maschili o femminili riferiti all'utente.`);
+}
   if (userMemory.colorePreferito) {
     facts.push(`Il suo colore preferito è ${userMemory.colorePreferito}.`);
   }
