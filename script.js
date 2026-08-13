@@ -112,14 +112,22 @@ function renderMemoryList() {
 
   const items = [];
 
-  if (userMemory.nome) {
+  if (userMemory.name) {
     items.push({
-      category: 'Nome',
-      value: userMemory.nome,
-      key: 'nome'
+        category: 'Nome',
+        value: userMemory.name,
+        key: 'name'
     });
-  }
-
+}
+  
+if (userMemory.gender) {
+    items.push({
+        category: 'Genere',
+        value: userMemory.gender,
+        key: 'gender'
+    });
+}
+  
   if (userMemory.colorePreferito) {
     items.push({
       category: 'Colore preferito',
@@ -242,8 +250,8 @@ function learnFromMessage(text) {
   const memory = { ...userMemory };
 
   let match = text.match(
-    /(?:mi chiamo|il mio nome è|sono)\s+([A-Za-zÀ-ÖØ-öø-ÿ'’-]{2,30})/i
-  );
+    /(?:mi chiamo|il mio nome è)\s+([A-Za-zÀ-ÖØ-öø-ÿ'-]{2,30})/i
+);
 
   if (match) {
     memory.nome = cleanValue(match[1]);
