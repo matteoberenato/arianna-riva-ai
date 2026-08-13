@@ -57,11 +57,18 @@ function saveSmartMemories(memories) {
     if (!category || !value) continue;
 
     const normalizedCategory = category.toLowerCase();
-const normalizedValue = value.toLowerCase();
+
+const normalizedValue = value
+  .toLowerCase()
+  .trim()
+  .replace(/^(il|lo|la|i|gli|le|un|uno|una)\s+/i, '');
 
 const existingIndex = userMemory.smartMemories.findIndex(item => {
   const itemCategory = item.category.toLowerCase();
-  const itemValue = item.value.toLowerCase();
+  const itemValue = item.value
+  .toLowerCase()
+  .trim()
+  .replace(/^(il|lo|la|i|gli|le|un|uno|una)\s+/i, '');
 
   if (itemCategory !== normalizedCategory) return false;
 
@@ -155,13 +162,25 @@ function renderMemoryList() {
 
   if (Array.isArray(userMemory.smartMemories)) {
     userMemory.smartMemories.forEach((memory, index) => {
-      items.push({
-        category: memory.category,
-        value: memory.value,
-        smartIndex: index
-      });
+
+        const normalizedCategory = memory.category
+            .toLowerCase()
+            .replace(/\s+/g, '');
+
+        const isDuplicate =
+            (normalizedCategory.includes('colore') && userMemory.colorePreferito) ||
+            (normalizedCategory.includes('auto') && userMemory.autoPreferita) ||
+            (normalizedCategory.includes('hobby') && userMemory.hobby);
+
+        if (!isDuplicate) {
+            items.push({
+                category: memory.category,
+                value: memory.value,
+                smartIndex: index
+            });
+        }
     });
-  }
+}
 
   if (!items.length) {
     emptyMemory.classList.remove('hidden');
