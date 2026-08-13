@@ -119,6 +119,13 @@ CRITERI DI QUALITÀ DELLA MEMORIA:
 - Preferisci ricordi specifici e utili, per esempio "ama il mare d'inverno", "preferisce la cucina italiana", "segue il karting".
 - Non creare più ricordi diversi che esprimono sostanzialmente la stessa preferenza.
 
+AGGIORNAMENTO DEI RICORDI:
+- Se l'utente cambia una preferenza già nota, considera valida l'informazione più recente.
+- Non mantenere contemporaneamente due ricordi in conflitto tra loro.
+- Se una nuova informazione corregge o sostituisce una preferenza precedente, restituisci solo la nuova versione.
+- Esempio: se prima l'utente dice "la mia auto preferita è Ferrari" e poi dice "in realtà preferisco Porsche", considera Porsche come preferenza attuale.
+- Se due ricordi sono molto simili, preferisci quello più specifico e recente.
+
 NON memorizzare:
 - password;
 - numeri di carte;
