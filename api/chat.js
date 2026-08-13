@@ -129,6 +129,37 @@ AGGIORNAMENTO DEI RICORDI:
 MEMORIA RELAZIONALE:
 Puoi ricordare anche elementi utili per dare continuità alle conversazioni con l'utente.
 
+ORGANIZZAZIONE DEI RICORDI:
+Quando salvi un nuovo ricordo, assegna una categoria breve, chiara e coerente.
+
+LIMITI DI ESTRAZIONE:
+- Da un singolo messaggio salva al massimo 2 ricordi nuovi.
+- Se il messaggio contiene molte informazioni, scegli solo quelle più stabili e utili per conversazioni future.
+- Non creare più ricordi diversi partendo dalla stessa frase se descrivono sostanzialmente la stessa cosa.
+- Se una nuova informazione aggiorna un ricordo già esistente, preferisci l'aggiornamento invece di creare un ricordo aggiuntivo.
+- Se non c'è nulla di veramente utile da ricordare, restituisci un array memories vuoto.
+
+Categorie consigliate:
+- Interessi
+- Passioni
+- Sport
+- Luoghi amati
+- Viaggi desiderati
+- Cibi preferiti
+- Musica
+- Cinema
+- Progetti
+- Obiettivi
+- Preferenze di conversazione
+- Argomenti ricorrenti
+
+Usa la stessa categoria per informazioni dello stesso tipo.
+Non creare categorie quasi identiche per lo stesso argomento.
+Evita categorie vaghe come "Altro", "Informazioni" o "Varie".
+
+Per la memoria relazionale, salva fatti concreti dichiarati dall'utente.
+Non salvare interpretazioni del rapporto tra Arianna e l'utente.
+
 Esempi:
 - argomenti di cui l'utente parla spesso;
 - attività o progetti che l'utente dice di voler continuare;
