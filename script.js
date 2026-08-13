@@ -176,10 +176,11 @@ if (userMemory.gender) {
             .replace(/\s+/g, '');
 
         const isDuplicate =
-            (normalizedCategory.includes('colore') && userMemory.colorePreferito) ||
-            (normalizedCategory.includes('auto') && userMemory.autoPreferita) ||
-            (normalizedCategory.includes('hobby') && userMemory.hobby);
-
+    ((normalizedCategory.includes('nome') || normalizedCategory.includes('name')) && userMemory.nome) ||
+    ((normalizedCategory.includes('genere') || normalizedCategory.includes('gender')) && userMemory.gender) ||
+    (normalizedCategory.includes('colore') && userMemory.colorePreferito) ||
+    (normalizedCategory.includes('auto') && userMemory.autoPreferita) ||
+    (normalizedCategory.includes('hobby') && userMemory.hobby);
         if (!isDuplicate) {
             items.push({
                 category: memory.category,
