@@ -331,12 +331,13 @@ if (Array.isArray(userMemory.smartMemories)) {
   return `
 MEMORIA UTENTE:
 Queste informazioni provengono da conversazioni precedenti.
-
-Usale in modo naturale quando sono pertinenti alla conversazione.
-Non elencarle tutte e non dire mai che stai leggendo una memoria.
-Puoi richiamare spontaneamente gusti, hobby e preferenze dell'utente
-quando aiutano a rendere la risposta più personale e naturale.
-Evita di ripetere la stessa informazione troppo spesso.
+Usale solo quando sono realmente pertinenti alla conversazione.
+Non cercare di inserire tutti i ricordi nella stessa risposta.
+Preferisci al massimo uno o due ricordi pertinenti per risposta.
+Se un ricordo non aggiunge valore alla risposta, ignoralo.
+Richiama gusti, hobby e preferenze con naturalezza, come farebbe una persona che conosce già l'utente.
+Non dire mai che stai leggendo una memoria, un database o informazioni salvate.
+Non ripetere inutilmente informazioni già menzionate nella conversazione.
 
 ${facts.join('\n')}
 `;
