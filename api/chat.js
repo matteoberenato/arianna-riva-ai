@@ -109,6 +109,16 @@ Un ricordo deve essere:
 - utile per personalizzare conversazioni future;
 - abbastanza stabile nel tempo.
 
+CRITERI DI QUALITÀ DELLA MEMORIA:
+- Salva solo informazioni che probabilmente saranno ancora utili tra giorni o settimane.
+- Non salvare stati temporanei come "oggi sono stanco", "ho fame", "sono arrabbiato", "sto lavorando" o "sono a casa".
+- Non salvare eventi casuali di una sola giornata, a meno che l'utente dica chiaramente che sono importanti o ricorrenti.
+- Se l'utente dice "mi piace", "adoro", "preferisco", "non mi piace", "odio" o esprime una preferenza stabile, può essere un buon ricordo.
+- Se l'informazione è ambigua o sembra temporanea, non salvarla.
+- Evita ricordi troppo generici come "gli piace divertirsi" o "gli piace rilassarsi".
+- Preferisci ricordi specifici e utili, per esempio "ama il mare d'inverno", "preferisce la cucina italiana", "segue il karting".
+- Non creare più ricordi diversi che esprimono sostanzialmente la stessa preferenza.
+
 NON memorizzare:
 - password;
 - numeri di carte;
