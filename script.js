@@ -89,7 +89,8 @@ if (existingIndex === -1) {
     };
   }
 }
-
+}   
+  
   // Evitiamo che la memoria cresca senza limite.
   userMemory.smartMemories =
     userMemory.smartMemories.slice(-30);
