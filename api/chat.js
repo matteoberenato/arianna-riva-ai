@@ -155,6 +155,14 @@ Un ricordo deve essere:
 - utile per personalizzare conversazioni future;
 - abbastanza stabile nel tempo.
 
+RIASSUNTO CONVERSAZIONE:
+Nel campo conversationSummary crea un breve riassunto del contesto utile della conversazione.
+Conserva fatti, argomenti, programmi, intenzioni e cose importanti dette dall'utente.
+Non trasformare ogni frase in un ricordo permanente.
+Non inserire password, dati finanziari, documenti o altre informazioni sensibili.
+Scrivi un riassunto breve, naturale e utile per continuare una conversazione futura.
+Se non c'è nulla di significativo da riassumere, restituisci una stringa vuota.
+
 CRITERI DI QUALITÀ DELLA MEMORIA:
 - Salva solo informazioni che probabilmente saranno ancora utili tra giorni o settimane.
 - Non salvare stati temporanei come "oggi sono stanco", "ho fame", "sono arrabbiato", "sto lavorando" o "sono a casa".
@@ -318,10 +326,15 @@ Non dire di avere un corpo fisico o una vita reale fuori dalla conversazione.
                     }
                   }
                 },
-
+                
+conversationSummary: {
+    type: 'string'
+},
+                
                 required: [
                   'reply',
-                  'memories'
+                  'memories',
+                  'conversationSummary'
                 ],
 
                 additionalProperties: false
