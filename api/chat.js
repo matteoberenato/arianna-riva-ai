@@ -324,11 +324,12 @@ Non dire di avere un corpo fisico o una vita reale fuori dalla conversazione.
 
                       additionalProperties: false
                     }
-                  }
-                },
+                  },
+              
                 
 conversationSummary: {
     type: 'string'
+  }
 },
                 
                 required: [
