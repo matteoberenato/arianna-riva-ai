@@ -438,6 +438,28 @@ function addMessage(text, who) {
   scrollToBottom();
 }
 
+let conversationRestored = false;
+
+function restoreConversationMessages() {
+    if (conversationRestored || !conversation.length) return;
+
+    conversationRestored = true;
+
+    for (const message of conversation) {
+        if (
+            !message ||
+            typeof message.content !== 'string'
+        ) {
+            continue;
+        }
+
+        addMessage(
+            message.content,
+            message.role === 'assistant' ? 'arianna' : 'user'
+        );
+    }
+}
+
 function showTyping() {
   typingIndicator.classList.remove('hidden');
 }
@@ -449,6 +471,7 @@ function hideTyping() {
 startBtn.addEventListener('click', () => {
   home.classList.add('hidden');
   chat.classList.remove('hidden');
+  restoreConversationMessages();  
   setTimeout(() => input.focus(), 100);
 });
 
