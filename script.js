@@ -20,7 +20,25 @@ const confirmClearModal = document.getElementById('confirmClearModal');
 const cancelClearBtn = document.getElementById('cancelClearBtn');
 const confirmClearBtn = document.getElementById('confirmClearBtn');
 
-const conversation = [];
+const CONVERSATION_KEY = 'arianna_recent_conversation_v1';
+
+function loadConversation() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(CONVERSATION_KEY));
+        return Array.isArray(saved) ? saved.slice(-12) : [];
+    } catch {
+        return [];
+    }
+}
+
+const conversation = loadConversation();
+
+function saveConversation() {
+    localStorage.setItem(
+        CONVERSATION_KEY,
+        JSON.stringify(conversation.slice(-12))
+    );
+}
 
 const MEMORY_KEY = 'arianna_user_memory_v1';
 
@@ -464,6 +482,7 @@ confirmClearBtn.addEventListener('click', () => {
   localStorage.removeItem(MEMORY_KEY);
   localStorage.removeItem('arianna_user_memory_v1');
   localStorage.removeItem('arianna_user_memory_v2');
+  localStorage.removeItem(CONVERSATION_KEY);
 
   userMemory = {};
   conversation.length = 0;
@@ -484,6 +503,8 @@ async function askArianna(text) {
     role: 'user',
     content: text
   });
+
+  saveConversation();
 
   showTyping();
 
@@ -537,6 +558,8 @@ if (response.ok && Array.isArray(data.memories)) {
       role: 'assistant',
       content: reply
     });
+
+  saveConversation();  
 
   } catch (error) {
     hideTyping();
