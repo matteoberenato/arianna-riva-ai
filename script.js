@@ -21,6 +21,7 @@ const cancelClearBtn = document.getElementById('cancelClearBtn');
 const confirmClearBtn = document.getElementById('confirmClearBtn');
 
 const CONVERSATION_KEY = 'arianna_recent_conversation_v1';
+const CONVERSATION_SUMMARY_KEY = 'arianna_conversation_summary_v1';
 
 function loadConversation() {
     try {
@@ -37,6 +38,17 @@ function saveConversation() {
     localStorage.setItem(
         CONVERSATION_KEY,
         JSON.stringify(conversation.slice(-12))
+    );
+}
+
+function loadConversationSummary() {
+    return localStorage.getItem(CONVERSATION_SUMMARY_KEY) || '';
+}
+
+function saveConversationSummary(summary) {
+    localStorage.setItem(
+        CONVERSATION_SUMMARY_KEY,
+        summary || ''
     );
 }
 
@@ -506,6 +518,7 @@ confirmClearBtn.addEventListener('click', () => {
   localStorage.removeItem('arianna_user_memory_v1');
   localStorage.removeItem('arianna_user_memory_v2');
   localStorage.removeItem(CONVERSATION_KEY);
+  localStorage.removeItem(CONVERSATION_SUMMARY_KEY);  
 
   userMemory = {};
   conversation.length = 0;
@@ -534,6 +547,17 @@ async function askArianna(text) {
   try {
     const messagesForAI = [];
 
+    const conversationSummary = loadConversationSummary();
+
+if (conversationSummary) {
+    messagesForAI.push({
+        role: 'user',
+        content:
+            `RIASSUNTO DELLE CONVERSAZIONI PRECEDENTI:\n${conversationSummary}\n` +
+            `Usalo solo quando è pertinente. Non dire all'utente che stai leggendo un riassunto salvato.`
+    });
+}  
+
     const remembered = memoryContext();
 
     if (remembered) {
@@ -560,6 +584,13 @@ async function askArianna(text) {
     const data = await response.json();
 
 hideTyping();
+
+      if (
+    response.ok &&
+    typeof data.conversationSummary === 'string'
+) {
+    saveConversationSummary(data.conversationSummary);
+}
 
 if (response.ok && Array.isArray(data.memories)) {
   saveSmartMemories(data.memories);
